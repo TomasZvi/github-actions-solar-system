@@ -77,13 +77,17 @@ jobs:
             registry: ghcr.io
             username: ${ github.repository_owner  }
             password: ${{ secrets.GITHUB_TOKEN }}
+        - name: Image full name
+          id: image-name
+          run: |
+            tmp=ghcr.io/${{ github.repository_owner }}/solar-system:${{ github.sha }}
+            echo "IMAGE_FULL_NAME=${tmp,,}" >> $GITHUB_ENV
         - name: Build and push
           uses: docker/build-push-action@v6
           with:
             push: true
-            # tags: ghcr.io/${{ github.repository_owner | toLower }}/solar-system:${{ github.sha }}
-            #tags: ${{ format('ghcr.io/{0}/solar-system:{1}', github.repository_owner, github.sha) | toLower }}
-            tags: ghcr.io/${{ env.OWNER_LC }}/solar-system:${{ github.sha }}
+            #tags: ghcr.io/${{ github.repository_owner }}/solar-system:${{ github.sha }}
+            tags: ${{ env.IMAGE_FULL_NAME }}
     dev-deploy:
         name: Deploy to DEV
         runs-on: ubuntu-latest
