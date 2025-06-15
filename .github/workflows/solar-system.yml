@@ -105,10 +105,11 @@ jobs:
           with:
             method: kubeconfig
             kubeconfig: '${{ secrets.KUBECONFIG }}'
-        - name: Verify kubectl intallation
-          run: kubectl version -o yaml
-        - run: >
-            echo "INGRESS_IP=$(kubectl -n ingress-nginx get services ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" >> $GITHUB_ENV
+        # There's a bug in KodeKloud and connection gets refusem so I comment these steps out
+        #- name: Verify kubectl intallation
+        #  run: kubectl version -o yaml
+        #- run: >
+        #    echo "INGRESS_IP=$(kubectl -n ingress-nginx get services ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}')" >> $GITHUB_ENV
         - uses: cschleiden/replace-tokens@v1
           with:
             tokenPrefix: '_{_'
