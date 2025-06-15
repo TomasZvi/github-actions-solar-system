@@ -81,7 +81,8 @@ jobs:
           uses: docker/build-push-action@v6
           with:
             push: true
-            tags: ghcr.io/${{ github.repository_owner | toLower }}/solar-system:${{ github.sha }}
+            # tags: ghcr.io/${{ github.repository_owner | toLower }}/solar-system:${{ github.sha }}
+            tags: ${{ format('ghcr.io/{0}/solar-system:{1}', github.repository_owner, github.sha) | toLower }}
     dev-deploy:
         name: Deploy to DEV
         runs-on: ubuntu-latest
