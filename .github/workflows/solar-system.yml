@@ -24,7 +24,7 @@ jobs:
           uses: actions/cache@v4
           with:
             path: ~/.npm
-            key: '${{ runner.os }}-node-modules-${{ hashFiles(''package-lock.json'') }}'
+            key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
         - name: Install Dependencies
           run: npm install
     
@@ -122,3 +122,9 @@ jobs:
             IMAGE: ${{ needs.docker.outputs.IMAGE_FULL_NAME }}
             INGRESS_IP: '${{ env.INGRESS_IP }}'
         - run: cat kubernetes/development/*.yaml
+    integration-testing:
+        needs: [dev-deploy]
+        uses: "./.github/workflows/reusable-workflow.yml"
+        with:
+          ingress-url: ${{ needs.dev-deploy.outputs.APP_INGRESS_URL }}
+
